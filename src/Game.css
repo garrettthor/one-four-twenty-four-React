@@ -1,0 +1,6 @@
+.Game-dice-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 5rem;
+}

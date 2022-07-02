@@ -1,0 +1,13 @@
+i {
+    color: red;
+    font-size: 6rem;
+    margin: 1.5rem;
+}
+
+.held {
+    color: lightblue;
+}
+
+.free {
+    color: red;
+}

@@ -10,6 +10,9 @@ class Game extends Component {
     constructor(props){
         super(props);
         this.state = {
+            gameOver: false,
+            pickOne: false,
+            rolled: false,
             score: 0,
             one: false,
             four: false,
@@ -30,7 +33,13 @@ class Game extends Component {
             hold3: false,
             hold4: false,
             hold5: false,
-            hold6: false
+            hold6: false,
+            permHold1: false,
+            permHold2: false,
+            permHold3: false,
+            permHold4: false,
+            permHold5: false,
+            permhold6: false
         };
         this.handleClick = this.handleClick.bind(this);
         this.holdOne = this.holdOne.bind(this);
@@ -39,12 +48,13 @@ class Game extends Component {
         this.holdFour = this.holdFour.bind(this);
         this.holdFive = this.holdFive.bind(this);
         this.holdSix = this.holdSix.bind(this);
+        this.handleEndTurn = this.handleEndTurn.bind(this);
     }
 
     handleClick(e) {
         if(this.state.hold1 === false){
             let rand1 = Math.floor(Math.random() * 6);
-            this.setState({ die1: this.props.faces[rand1]})  
+            this.setState({ die1: this.props.faces[rand1]});  
         };
 
         if(this.state.hold2 === false){
@@ -71,6 +81,9 @@ class Game extends Component {
             let rand6 = Math.floor(Math.random() * 6);
             this.setState({ die6: this.props.faces[rand6]});
         };
+
+        this.setState({ rolled: true})
+
     }
 
     holdOne(e){
@@ -79,6 +92,8 @@ class Game extends Component {
         } else {
             this.setState({ hold1: false });
         };
+
+
     }
 
     holdTwo(e){
@@ -121,6 +136,32 @@ class Game extends Component {
         };
     }
 
+    handleEndTurn(e) {
+        if(this.state.hold1 === true){
+            this.setState({ permHold1: true })
+        }
+
+        if(this.state.hold2 === true){
+            this.setState({ permHold2: true })
+        }
+        
+        if(this.state.hold3 === true){
+            this.setState({ permHold3: true })
+        }
+
+        if(this.state.hold4 === true){
+            this.setState({ permHold4: true })
+        }
+
+        if(this.state.hold5 === true){
+            this.setState({ permHold5: true })
+        }
+
+        if(this.state.hold6 === true){
+            this.setState({ permHold6: true })
+        }
+    }
+
     render(){
         return(
             <div>
@@ -128,40 +169,60 @@ class Game extends Component {
                 <h2>Score: {this.state.score}</h2>
                 <h3>One?</h3>
                 <h3>Four?</h3>
-                <div className="Game-dice-area">
+                {this.state.gameOver ? "Game over" : <div className="Game-dice-area">
                     <div className="Game-die">
                         <Die face={`${this.state.die1}`} held={this.state.hold1}/>
-                        <button onClick={this.holdOne}>{this.state.hold1 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold1 ?
+                            "PermHeld" 
+                            : <button onClick={this.holdOne}>{this.state.hold1 ? 'Release' : 'Hold'}</button>
+                        }
                     </div>
                     
                     <div className='Game-die'>
                         <Die face={`${this.state.die2}`} held={this.state.hold2}/>
-                        <button onClick={this.holdTwo}>{this.state.hold2 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold2 ?
+                            "PermHeld" 
+                            : <button onClick={this.holdTwo}>{this.state.hold2 ? 'Release' : 'Hold'}</button>
+                            }
                     </div>
                     
                     <div className='Game-die'>
                         <Die face={`${this.state.die3}`} held={this.state.hold3}/>
-                        <button onClick={this.holdThree}>{this.state.hold3 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold3 ?
+                            "PermHeld"
+                            : <button onClick={this.holdThree}>{this.state.hold3 ? 'Release' : 'Hold'}</button>
+                        }
                     </div>
                     
                     <div className='Game-die'>
                         <Die face={`${this.state.die4}`} held={this.state.hold4}/>
-                        <button onClick={this.holdFour}>{this.state.hold4 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold4 ?
+                            "PermHeld"
+                            : <button onClick={this.holdFour}>{this.state.hold4 ? 'Release' : 'Hold'}</button>
+                        }
                     </div>
                     
                     <div className='Game-die'>
                         <Die face={`${this.state.die5}`} held={this.state.hold5}/>
-                        <button onClick={this.holdFive}>{this.state.hold5 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold5 ? 
+                            "PermHeld"
+                            : <button onClick={this.holdFive}>{this.state.hold5 ? 'Release' : 'Hold'}</button>
+                        }
                     </div>
                     
                     <div className='Game-die'>
                         <Die face={`${this.state.die6}`} held={this.state.hold6}/>
-                        <button onClick={this.holdSix}>{this.state.hold6 ? 'Release' : 'Hold'}</button>
+                        {this.state.permHold6 ?
+                            "PermHeld"
+                            : <button onClick={this.holdSix}>{this.state.hold6 ? 'Release' : 'Hold'}</button>
+                        }
                     </div>
                     
-                </div>
+                </div>}
+                
                 <div className='Game-button-area'>
                     <button onClick={this.handleClick}>Roll!</button>
+                    <button onClick={this.handleEndTurn}>Confirm Hold(s), submit turn</button>
                 </div>
                 
             </div>
